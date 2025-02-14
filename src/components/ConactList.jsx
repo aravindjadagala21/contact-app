@@ -3,21 +3,28 @@ import { nanoid } from "nanoid";
 import { Link } from 'react-router-dom'
 import './styles.css'
 export default  function ConactList(props){
-    const {id,name,email} = props.contacts;
-    console.log(id)
     const renderContactList = props.contacts.map((contact)=>{
+        const {id,name,email} = contact;
+        const styles = {color:"black",textDecoration: "none"}
         return (
             <div key={nanoid()} className="items">
                 <div className="content">
-                    <Link to="/profile" style={{color:"black",textDecoration: "none"}} state={{}}>
-                    <div className="name">{contact.name}</div>
-                    <div className='email'>{contact.email}</div>
+                    <Link to="/profile" style={styles} 
+                    state={{id:id,name:name,email:email}}
+                    >
+                    <div className="name">{name}</div>
+                    <div className='email'>{email}</div>
                     </Link>
                 </div>
                 <div className="icon">
-                <span>
-                ✏️
-                </span>
+                    <Link
+                    to="/edit"
+                    style={styles} 
+                    state={{id:id,name:name,email:email}}
+                    >
+                        <span >Edit ✏️</span>
+                    </Link>
+                
                 <span className='dlt' 
                 onClick={()=>props.removeContactHandler(contact.id)}
                 style={{cursor:'pointer',marginLeft:"10px"}}

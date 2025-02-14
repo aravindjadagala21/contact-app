@@ -11,9 +11,12 @@ import { BrowserRouter as Router,
                } from "react-router-dom";
 
 import ContactProfile from './ContactProfile';
+// import { esbuildVersion } from 'vite';
+import EditProfile from './EditProfile'
 export default function App(){
   const LocalStorage_KEY= "contacts"
   const [contacts,setContacts] = useState([])
+
   function addContactHandler(contact){
     setContacts((prev)=>[...prev,contact])
   }
@@ -23,6 +26,23 @@ export default function App(){
       return contact.id !==id;
     })
     setContacts(newContacts)
+  }
+   
+  function editProfile(object){
+
+    const updatedContactsList = contacts.map((obj)=>{
+      console.log(obj)
+      if(obj.id ==object.id){
+        return {
+          id:obj.id,
+          name:object.name,
+          email:object.email,
+        }
+      }
+      return obj;
+      
+    })
+    setContacts(updatedContactsList);
   }
   useEffect(()=>{
     const contacts_list = JSON.parse(localStorage.getItem(LocalStorage_KEY));
@@ -42,6 +62,7 @@ export default function App(){
         <Route path="/" element={<ContactList contacts={contacts} removeContactHandler={removeContactHandler} />} />
         <Route path="/add" element={<AddContact addContactHandler={addContactHandler} />} />
         <Route path='/profile' element={<ContactProfile/>}  />
+        <Route path="/edit" element ={<EditProfile  editProfile={editProfile}/>}/>
       </Routes>
     </div>
   </Router>

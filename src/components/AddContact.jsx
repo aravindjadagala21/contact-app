@@ -2,16 +2,15 @@
 import './styles.css';
 import { useState } from 'react';
 import { nanoid } from "nanoid";
-
+import { Link } from 'react-router-dom'
 export default function AddContact(props){
-
+    const styles = {color:"black",textDecoration: "none"}
     const [contact,setContact] = useState({
         id:nanoid(),
         name:"",
         email:""
     })
     function onChangeHandler(e){
-        console.log(nanoid())
         const {name,value} = e.target;
         setContact((prev)=>({...prev,[name]:value}))
        
@@ -23,6 +22,7 @@ export default function AddContact(props){
         }
         props.addContactHandler(contact)
         setContact({
+            id:nanoid(),
             name:"",
             email:""
         })
@@ -52,7 +52,10 @@ export default function AddContact(props){
                     value={contact.email}
                     />
                 </div>
-                <button className='form_btn'>add</button>
+                <div className='editFormBtn'>
+                <button >add</button>
+                <Link to="/" style={styles}> <button>Back</button>  </Link>
+                </div>
             </form>
         </div>
     )
