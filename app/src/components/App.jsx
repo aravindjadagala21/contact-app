@@ -3,6 +3,7 @@
 import AddContact from './AddContact'
 import Header from './Header'
 import ContactList from './ConactList'
+import { nanoid } from "nanoid";
 import { useEffect, useState } from 'react'
 import { BrowserRouter as Router,
                Routes,
@@ -11,32 +12,38 @@ import { BrowserRouter as Router,
                } from "react-router-dom";
 
 import ContactProfile from './ContactProfile';
+import constactsapi from '../api/contacts'
 // import { esbuildVersion } from 'vite';
 import EditProfile from './EditProfile'
 export default function App(){
   const LocalStorage_KEY= "contacts"
   const [contacts,setContacts] = useState([])
 
-  function addContactHandler(contact){
-    setContacts((prev)=>[...prev,contact])
+  async function addContactHandler(contact){
+    const request = {
+      id:nanoid(),
+      ...contact
+    }
+    const res = await constactsapi.post("/contacts",contact)
+    setContacts((prev)=>[...prev,res.data])
   }
   
-  function removeContactHandler(id){
+  async function removeContactHandler(id){
+    const res = await constactsapi.delete(`/contacts/${id}`)
     const newContacts = contacts.filter((contact)=>{
-      return contact.id !==id;
+      return contact.id !==res.data.id;
     })
     setContacts(newContacts)
   }
    
-  function editProfile(object){
-
+   async function editProfile(object){
+    const res = (await constactsapi.patch(`/contacts/${object.id}`,object)).data
     const updatedContactsList = contacts.map((obj)=>{
-      console.log(obj)
       if(obj.id ==object.id){
         return {
           id:obj.id,
-          name:object.name,
-          email:object.email,
+          name:res.name,
+          email:res.email,
         }
       }
       return obj;
@@ -44,13 +51,20 @@ export default function App(){
     })
     setContacts(updatedContactsList);
   }
+  function getContacts(){
+    constactsapi.get("/contacts")
+    .then(res=>{
+      if(res.data) setContacts(res.data)
+        else console.log("404 not found")
+    })
+  }
+
   useEffect(()=>{
-    const contacts_list = JSON.parse(localStorage.getItem(LocalStorage_KEY));
-    if(contacts_list) setContacts(contacts_list)
+    getContacts()
   },[])
-  useEffect(()=>{
-    localStorage.setItem(LocalStorage_KEY,JSON.stringify(contacts))
-  },[contacts])
+  // useEffect(()=>{
+   
+  // },[contacts])
 
 
   
