@@ -29,12 +29,17 @@ export default function AddContact(props){
     }
 
     return (
-        <div className="addContact">
-            <form action="" onSubmit={submitHandler}>
-                <h2>Add Contacts</h2>  
-                <div className="name">
-                    <label htmlFor="name" >Name:</label>
+        <div className="flex justify-center h-screen bg-gray-200 items-center">
+            <form action="" onSubmit={submitHandler}
+            className='flex flex-col gap-15 border py-6 px-15'
+            >
+                <h2 className='text-3xl font-bold '>Add Contacts</h2>  
+                <div className=" ">
+                    <label htmlFor="name " 
+                    className='block mb-2 text-xl font-medium'
+                    >Name:</label>
                     <input type="text" 
+                    className='border-b font-normal outline-0'
                     id="name" 
                     placeholder='Name' 
                     name='name' 
@@ -43,8 +48,11 @@ export default function AddContact(props){
                     />
                 </div>
                 <div className="email">
-                    <label htmlFor="email">Email:</label>
+                    <label htmlFor="email"
+                      className='block mb-2 text-xl font-medium'
+                    >Email:</label>
                     <input type="email" 
+                     className='border-b font-bold outline-0'
                     id="email" 
                     placeholder='Email' 
                     name='email' 
@@ -52,9 +60,13 @@ export default function AddContact(props){
                     value={contact.email}
                     />
                 </div>
-                <div className='editFormBtn'>
-                <button >add</button>
-                <Link to="/" style={styles}> <button>Back</button>  </Link>
+                <div className='flex justify-evenly'>
+                <button 
+                className='bg-blue-200 rounded py-2 px-4'
+                >add</button>
+                <Link to="/" style={styles}> <button
+                className='bg-blue-200 rounded py-2 px-4' 
+                >Back</button>  </Link>
                 </div>
             </form>
         </div>
